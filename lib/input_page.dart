@@ -1,9 +1,11 @@
+import 'package:bmi_calculator/calculate.dart';
 import 'package:bmi_calculator/reults_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'custom_card.dart';
 import 'icon_content.dart';
 import 'constants.dart';
+import 'calculate.dart';
 
 enum Gender {
   male,
@@ -19,7 +21,7 @@ class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
   int weight = 60;
-  int age = 19;
+  int age = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,24 +210,47 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ResultsPage();
-                }));
-              },
-              child: Container(
-                child: Text(
-                  'CALCULATE',
-                ),
-                color: kbottomContainerColour,
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: kbottomContainerHeight,
-              ),
-            )
+            BottomButton(
+                text: 'CALCULATE',
+                onTap: () {
+                  CalculatorBrain calc =
+                      CalculatorBrain(height: height, weight: weight);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ResultsPage(
+                      bmiResult: calc.calculateBMI(),
+                      resultText: calc.getResult(),
+                      interpretationofResult: calc.getInterpretation(),
+                    );
+                  }));
+                }),
           ],
         ));
+  }
+}
+
+class BottomButton extends StatelessWidget {
+  BottomButton({@required this.text, @required this.onTap});
+  final String text;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        child: Center(
+          child: Text(
+            text,
+            style: kButtonTextStyle,
+          ),
+        ),
+        padding: EdgeInsets.only(bottom: 20.0),
+        color: kbottomContainerColour,
+        margin: EdgeInsets.only(top: 10.0),
+        width: double.infinity,
+        height: kbottomContainerHeight,
+      ),
+    );
   }
 }
 
