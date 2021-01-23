@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/reults_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'custom_card.dart';
@@ -17,7 +18,8 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
-
+  int weight = 60;
+  int age = 19;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,23 +124,128 @@ class _InputPageState extends State<InputPage> {
                   Expanded(
                     child: CustomCard(
                       colour: kactiveCardColour,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'WEIGHT',
+                            style: kLabelTextStyle,
+                          ),
+                          Text(
+                            weight.toString(),
+                            style: kBiggerTextStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RoundIconButton(
+                                onPressing: () {
+                                  setState(() {
+                                    weight = weight - 1;
+                                  });
+                                },
+                                icon: FontAwesomeIcons.minus,
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              RoundIconButton(
+                                onPressing: () {
+                                  setState(() {
+                                    weight = weight + 1;
+                                  });
+                                },
+                                icon: FontAwesomeIcons.plus,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
                     child: CustomCard(
                       colour: kactiveCardColour,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'AGE',
+                            style: kLabelTextStyle,
+                          ),
+                          Text(
+                            age.toString(),
+                            style: kBiggerTextStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RoundIconButton(
+                                onPressing: () {
+                                  setState(() {
+                                    age = age - 1;
+                                  });
+                                },
+                                icon: FontAwesomeIcons.minus,
+                              ),
+                              SizedBox(
+                                width: 15.0,
+                              ),
+                              RoundIconButton(
+                                onPressing: () {
+                                  setState(() {
+                                    age = age + 1;
+                                  });
+                                },
+                                icon: FontAwesomeIcons.plus,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              color: kbottomContainerColour,
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              height: kbottomContainerHeight,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ResultsPage();
+                }));
+              },
+              child: Container(
+                child: Text(
+                  'CALCULATE',
+                ),
+                color: kbottomContainerColour,
+                margin: EdgeInsets.only(top: 10.0),
+                width: double.infinity,
+                height: kbottomContainerHeight,
+              ),
             )
           ],
         ));
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  RoundIconButton({@required this.icon, @required this.onPressing});
+  final IconData icon;
+  final Function onPressing;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(icon),
+      onPressed: onPressing,
+      elevation: 6.0,
+      constraints: BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
+      ),
+      shape: CircleBorder(),
+      fillColor: Color(0xff4c4f5e),
+    );
   }
 }
